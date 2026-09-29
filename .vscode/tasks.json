@@ -1,0 +1,223 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "SlotWise frontend install",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"frontend",
+				"install"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise frontend build",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"frontend",
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise backend tests",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"backend",
+				"test"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise frontend build",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"frontend",
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise frontend build",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"frontend",
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise backend tests",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"backend",
+				"test"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise root install",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"install"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise backend tests",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"test"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise production build",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise frontend dev server",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"dev",
+				"--prefix",
+				"frontend",
+				"--",
+				"--host",
+				"127.0.0.1"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check MongoDB availability",
+			"type": "shell",
+			"command": "node.exe",
+			"args": [
+				"-e",
+				"require('net').connect(27017,'127.0.0.1').on('connect',()=>{console.log('MongoDB port 27017 is reachable');process.exit(0)}).on('error',()=>{console.log('MongoDB port 27017 is not reachable');process.exit(0)})"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Test configured MongoDB connection",
+			"type": "shell",
+			"command": "node.exe",
+			"args": [
+				"-e",
+				"require('./backend/node_modules/dotenv').config({path:'backend/.env'}); const mongoose=require('./backend/node_modules/mongoose'); mongoose.connect(process.env.MONGO_URI,{serverSelectionTimeoutMS:8000}).then(async()=>{console.log('MongoDB connection OK'); await mongoose.disconnect();}).catch(error=>{console.log('MongoDB connection failed:',error.name,error.message.replace(/mongodb(?:\\+srv)?:\\/\\/[^\\s]+/gi,'[redacted connection string]'));process.exitCode=1;});"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SlotWise backend dev server",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"backend",
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check SlotWise API health",
+			"type": "shell",
+			"command": "node.exe",
+			"args": [
+				"-e",
+				"let attempts=0; const check=async()=>{try{const response=await fetch('http://127.0.0.1:5000/api/health'); console.log('API health:',response.status,await response.text()); process.exit(response.ok?0:1);}catch(error){if(++attempts<10){setTimeout(check,500);return;} console.log('API not reachable:',error.cause?.code||error.message); process.exit(1);}}; check();"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify API health cleanly",
+			"type": "shell",
+			"command": "node.exe",
+			"args": [
+				"-e",
+				"fetch('http://127.0.0.1:5000/api/health').then(async response=>console.log('API health:',response.status,await response.text())).catch(error=>{console.error('API health request failed:',error.cause?.code||error.message); process.exitCode=1;});"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check auth route test",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"backend",
+				"test",
+				"--",
+				"src/tests/app.test.js"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check frontend build",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"frontend",
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Install SlotWise mail dependency",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"--prefix",
+				"backend",
+				"install"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
