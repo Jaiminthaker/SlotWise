@@ -26,7 +26,7 @@ describe('generateSlots', () => {
 
   it('honors service buffer and requires the full duration to fit', () => {
     const slots = generateSlots({ ...baseInput, service: { durationMin: 30, bufferAfterMin: 15 } });
-    expect(slots.map((slot) => DateTime.fromJSDate(slot).toFormat('HH:mm'))).toEqual(['09:00', '09:15', '09:30', '09:45']);
+    expect(slots.map((slot) => DateTime.fromJSDate(slot, { zone: 'utc' }).toFormat('HH:mm'))).toEqual(['09:00', '09:15', '09:30', '09:45']);
   });
 
   it('filters overlaps but allows a slot to end when a booking starts', () => {
@@ -34,7 +34,7 @@ describe('generateSlots', () => {
       ...baseInput,
       bookings: [{ start: new Date('2030-01-07T09:30:00.000Z'), end: new Date('2030-01-07T10:00:00.000Z') }]
     });
-    expect(slots.map((slot) => DateTime.fromJSDate(slot).toFormat('HH:mm'))).toEqual(['09:00', '10:00']);
+    expect(slots.map((slot) => DateTime.fromJSDate(slot, { zone: 'utc' }).toFormat('HH:mm'))).toEqual(['09:00', '10:00']);
   });
 
   it('applies day overrides and minimum notice', () => {
@@ -44,7 +44,7 @@ describe('generateSlots', () => {
       now: new Date('2030-01-07T09:15:00.000Z'),
       minNoticeHours: 2
     });
-    expect(slots.map((slot) => DateTime.fromJSDate(slot).toFormat('HH:mm'))).toEqual(['11:15', '11:30']);
+    expect(slots.map((slot) => DateTime.fromJSDate(slot, { zone: 'utc' }).toFormat('HH:mm'))).toEqual(['11:15', '11:30']);
     expect(generateSlots({ ...baseInput, override: { type: 'off', ranges: [] } })).toEqual([]);
   });
 

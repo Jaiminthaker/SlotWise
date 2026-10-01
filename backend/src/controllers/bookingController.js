@@ -7,7 +7,7 @@ export const create = asyncHandler(async (req, res) => {
 });
 
 export const mine = asyncHandler(async (req, res) => {
-  res.json({ bookings: await Booking.find({ customerId: req.user.id }).sort({ start: 1 }).populate('providerId').populate('serviceId') });
+  res.json({ bookings: await Booking.find({ customerId: req.user.id }).sort({ start: 1 }).populate({ path: 'providerId', populate: { path: 'userId', select: 'name' } }).populate('serviceId') });
 });
 
 export const cancel = asyncHandler(async (req, res) => {

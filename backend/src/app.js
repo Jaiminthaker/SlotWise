@@ -13,8 +13,19 @@ import adminRoutes from './routes/adminRoutes.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 
 const app = express();
+
+// CORS
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || origin === 'http://localhost:5173' || origin === 'http://127.0.0.1:5173') {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
+
 app.use(helmet());
-app.use(cors({ origin: env.CLIENT_ORIGIN, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(morgan('dev'));
